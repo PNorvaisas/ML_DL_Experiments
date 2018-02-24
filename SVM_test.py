@@ -10,9 +10,6 @@ from sklearn import svm
 
 
 
-
-#import network
-
 training_data, validation_data, test_data = mnist_loader.load_data()
 
 images_training=mnist.get_images(training_data)
@@ -52,21 +49,6 @@ mnist.plot_images_separately(images_test[:10])
 
 
 
-
-
-
 clf.predict(test_data[0])
 
-
-
-
-
-
-
-
-
-
-net=network.Network([784, 30, 10])
-
-net.SGD(training_data, 30, 10, 3.0, test_data=test_data)
 
