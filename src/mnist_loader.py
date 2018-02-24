@@ -7,6 +7,11 @@ mnist_loader
 
 import cPickle
 import gzip
+import os
+
+import matplotlib
+import matplotlib.pyplot as plt
+
 
 import numpy as np
 
@@ -33,7 +38,7 @@ def load_data():
     That's done in the wrapper function ``load_data_wrapper()``, see
     below.
     """
-    f = gzip.open('../data/mnist.pkl.gz', 'rb')
+    f = gzip.open('{}/data/mnist.pkl.gz'.format(os.getcwd()), 'rb')
     training_data, validation_data, test_data = cPickle.load(f)
     f.close()
     return (training_data, validation_data, test_data)
@@ -77,3 +82,4 @@ def vectorized_result(j):
     e = np.zeros((10, 1))
     e[j] = 1.0
     return e
+
