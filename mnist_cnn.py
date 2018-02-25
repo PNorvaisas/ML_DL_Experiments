@@ -13,6 +13,10 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 
+# Import EarlyStopping
+from keras.callbacks import EarlyStopping
+
+
 batch_size = 128
 num_classes = 10
 epochs = 12
@@ -60,11 +64,16 @@ model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])
 
+
+# Define early_stopping_monitor
+early_stopping_monitor = EarlyStopping(patience=2)
+
 model.fit(x_train, y_train,
           batch_size=batch_size,
           epochs=epochs,
           verbose=1,
-          validation_data=(x_test, y_test))
+          validation_data=(x_test, y_test),
+          callbacks = [early_stopping_monitor])
 
 
 score = model.evaluate(x_test, y_test, verbose=0)
