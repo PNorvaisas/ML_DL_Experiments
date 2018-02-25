@@ -6,23 +6,13 @@ import mnist
 import matplotlib.pyplot as plt
 
 
-
-# Activation functions for neurons
-def linear(z): return z
-def ReLU(z): return np.max(0.0, z)
-
-
-
-
-
-
 import keras
 # Import EarlyStopping
 from keras.callbacks import EarlyStopping
 
 from keras.layers import Dense
 from keras.models import Sequential
-from keras.datasets import mnist
+from keras.datasets import mnist as mnistdata
 
 
 
@@ -33,7 +23,9 @@ from keras.datasets import mnist
 training_data, validation_data, test_data = mnist_loader.load_data()
 
 
+#from keras.datasets import mnist
 
+#training_data, test_data = mnistdata.load_data()
 
 
 # Specify the model
@@ -41,10 +33,13 @@ training_data, validation_data, test_data = mnist_loader.load_data()
 batch_size = 128
 num_classes = 10
 epochs = 12
-span=50000
+span=60000
 
 train_nums=training_data[0][:span]
 train_vals=keras.utils.to_categorical(training_data[1][:span], num_classes)
+
+
+
 
 test_nums=validation_data[0]
 test_vals=keras.utils.to_categorical(validation_data[1], num_classes)
@@ -84,11 +79,7 @@ fit=model.fit(train_nums,train_vals,
               callbacks=[early_stopping_monitor])
 
 
-# Verify that model contains information from compiling
-print("Loss function: " + model.loss)
-
-
-
+model.save('models/keras_784-100-100-50.h5')
 
 
 
@@ -99,12 +90,21 @@ plt.ylabel('Validation accuracy')
 plt.show()
 
 
-
 # Calculate predictions: predictions
 predictions = model.predict(test_data[0])
 
-# Calculate predicted probability of survival: predicted_prob_true
-predicted_prob_true = predictions[:,1]
 
-# print predicted_prob_true
-print(predicted_prob_true)
+pred_vals=np.asarray([np.argmax(pred) for pred in predictions])
+pred_sign=[ np.round(predictions[i,pred],2) for i,pred in enumerate(pred_vals)]
+
+np.round(predictions[:10],2)
+
+
+test_imgs=mnist.get_images(test_data)
+
+pred_vals[:10]
+pred_sign[:10]
+
+
+mnist.plot_images_together(test_imgs[:10])
+
